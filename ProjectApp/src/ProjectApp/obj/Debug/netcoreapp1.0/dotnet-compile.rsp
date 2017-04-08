@@ -205,3 +205,5 @@ C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Progr
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Startup.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Controllers\LoggedInController.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Controllers\MainController.cs
+C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\ViewComponents\LoginViewComponent.cs
+C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\ViewModels\LoginViewModel.cs
