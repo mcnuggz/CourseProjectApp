@@ -203,4 +203,5 @@
 --resource:"C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\obj\Debug\netcoreapp1.0\ProjectAppdotnet-compile.deps.json",ProjectApp.deps.json
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Program.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Startup.cs
+C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Controllers\LoggedInController.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Controllers\MainController.cs

@@ -15,8 +15,20 @@
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
+    <!--Side Bar-->
+    <div class="ui visible inverted left vertical sidebar menu">
+        <a class="item"><i class="home icon"></i>Home Page</a>
+    </div>
 
+    <!--Fixed Navbar-->
+    <div class="ui top fixed menu">
+        <!--Content from cshtml pages-->
+        <a class="item" asp-controller="LoggedIn" asp-action="Logout">Logout</a>
+    </div>
+
+    <div class="pusher">
         @RenderBody()
+    </div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
