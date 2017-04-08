@@ -15,5 +15,17 @@ namespace ProjectApp.Controllers
         {
             return View();
         }
+
+        public IActionResult Authenticate()
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "LoggedIn");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Main");
+            }
+        }
     }
 }
