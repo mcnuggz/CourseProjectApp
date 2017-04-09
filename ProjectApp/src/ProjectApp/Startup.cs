@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ProjectApp.Entities;
 
 namespace ProjectApp
 {
@@ -31,7 +32,7 @@ namespace ProjectApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddDbContext<>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddMvc();
         }
 
