@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProjectApp.Models;
+using ProjectApp.Services;
 
 namespace ProjectApp
 {
@@ -22,6 +23,7 @@ namespace ProjectApp
             if (env.IsDevelopment())
             {
                 builder.AddApplicationInsightsSettings(developerMode: true);
+                builder.AddUserSecrets();
             }
             Configuration = builder.Build();
         }
@@ -38,6 +40,8 @@ namespace ProjectApp
                 .AddEntityFrameworkStores<ProfileContext>()
                 .AddDefaultTokenProviders();
             services.AddMvc();
+            services.AddTransient<IEmailSend, MessageSend>();
+            services.Configure<MessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
