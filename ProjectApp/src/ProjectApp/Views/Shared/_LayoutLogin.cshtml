@@ -23,7 +23,7 @@
     <!--Fixed Navbar-->
     <div class="ui top fixed menu">
         <!--Content from cshtml pages-->
-        <a class="item" asp-controller="LoggedIn" asp-action="Logout">Logout</a>
+        @await Html.PartialAsync("_LoginPartial")
     </div>
 
     <div class="pusher">
