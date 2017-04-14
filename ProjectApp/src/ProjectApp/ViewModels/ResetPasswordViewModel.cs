@@ -21,5 +21,7 @@ namespace ProjectApp.ViewModels
         [Display(Name ="Confirm Password")]
         [Compare("Password", ErrorMessage ="The password and the confirmation password must match!")]
         public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
     }
 }

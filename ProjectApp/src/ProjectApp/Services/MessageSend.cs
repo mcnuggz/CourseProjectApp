@@ -18,7 +18,7 @@ namespace ProjectApp.Services
         {
             var myMessage = new SendGridMessage();
             myMessage.AddTo(email);
-            myMessage.From = new MailAddress("nanner_man@live.com", "Jack Johnson");
+            myMessage.From = new MailAddress("nanner_man@live.com", "Application");
             myMessage.Subject = subject;
             myMessage.Text = message;
 

@@ -70,8 +70,11 @@ namespace ProjectApp.Controllers
 
                 if (identityResults.Succeeded)
                 {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Main", new { userId = identityUser.Id, code = code}, protocol: HttpContext.Request.Scheme);
+                    await _emailSend.SendEmailAsync(model.Username, "Confirm Account", $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>Link</a>");
                     await _signInManager.SignInAsync(identityUser, isPersistent: false);
-                    return RedirectToAction("Index", "LoggedIn");
+                    return View(model);
                 }
                 else
                 {
@@ -91,19 +94,17 @@ namespace ProjectApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
                     return RedirectToAction("Index", "Main");
                 }
-                var code = "token";
-                var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Main");
-                }
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (!result.Succeeded) return View(model);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "LoggedIn");
             }
             return View(model);
         }
@@ -120,12 +121,15 @@ namespace ProjectApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                var confirmed = await _userManager.IsEmailConfirmedAsync(user);
+                if (user == null || !(confirmed))
                 {
                     return View("ForgotPasswordConfirmation");
                 }
                 //send email confirmation
-
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Main", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await _emailSend.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Link</a>");
             }
             return View(model);
         }
@@ -145,8 +149,26 @@ namespace ProjectApp.Controllers
 
         public async Task<IActionResult> TestEmail()
         {
-            await _emailSend.SendEmailAsync("dzanfox@gmail.com", "Test Email", "My Frist SendGrid Email");
+            await _emailSend.SendEmailAsync("dwebb761@gmail.com", "Hi Mom", "Sending you my first SendGrid email used in my project I'm working on!");
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View("ConfirmEmail");
         }
     }
 }
