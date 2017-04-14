@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ProjectApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using ProjectApp.Models;
+using ProjectApp.Services;
+using ProjectApp.ViewModels;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,11 +14,13 @@ namespace ProjectApp.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSend _emailSend;
 
-        public MainController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public MainController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSend emailSend)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSend = emailSend;
         }
 
         // GET: /<controller>/
@@ -141,6 +141,12 @@ namespace ProjectApp.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Main");
+        }
+
+        public async Task<IActionResult> TestEmail()
+        {
+            await _emailSend.SendEmailAsync("dzanfox@gmail.com", "Test Email", "My Frist SendGrid Email");
+            return View();
         }
     }
 }

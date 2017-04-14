@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using SendGrid;
 using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace ProjectApp.Services
@@ -14,7 +16,16 @@ namespace ProjectApp.Services
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            throw new NotImplementedException();
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(email);
+            myMessage.From = new MailAddress("nanner_man@live.com", "Jack Johnson");
+            myMessage.Subject = subject;
+            myMessage.Text = message;
+
+            var apiKey = Options.SendGridApiKey;
+            var transportWeb = new Web(apiKey);
+
+            return transportWeb.DeliverAsync(myMessage);
         }
     }
 }
