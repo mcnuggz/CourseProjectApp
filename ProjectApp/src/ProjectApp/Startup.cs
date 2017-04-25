@@ -41,6 +41,7 @@ namespace ProjectApp
                 .AddDefaultTokenProviders();
             services.AddMvc();
             services.AddTransient<IEmailSend, MessageSend>();
+            services.AddTransient<ISmsSend, MessageSend>();
             services.Configure<MessageSenderOptions>(Configuration);
         }
 

@@ -237,6 +237,7 @@ C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Model
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Models\ProfileContext.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Models\Register.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Services\IEmailSend.cs
+C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Services\ISmsSend.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Services\MessageSend.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\Services\MessageSenderOptions.cs
 C:\Users\nanne\Documents\GitHub\CourseProjectApp\ProjectApp\src\ProjectApp\ViewComponents\LoginViewComponent.cs

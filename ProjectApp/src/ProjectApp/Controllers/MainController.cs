@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectApp.Models;
 using ProjectApp.Services;
 using ProjectApp.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,12 +16,13 @@ namespace ProjectApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSend _emailSend;
-
-        public MainController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSend emailSend)
+        private readonly ISmsSend _smsSend;
+        public MainController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSend emailSend, ISmsSend smsSend)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSend = emailSend;
+            _smsSend = smsSend;
         }
 
         // GET: /<controller>/
@@ -72,7 +74,7 @@ namespace ProjectApp.Controllers
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
                     var callbackUrl = Url.Action("ConfirmEmail", "Main", new { userId = identityUser.Id, code = code}, protocol: HttpContext.Request.Scheme);
-                    await _emailSend.SendEmailAsync(model.Username, "Confirm Account", $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>Link</a>");
+                    await _emailSend.SendEmailAsync(model.Username, "Confirm Account", $"Please confirm your account by clicking this link: {Environment.NewLine}<a href='{callbackUrl}'></a>");
                     await _signInManager.SignInAsync(identityUser, isPersistent: false);
                     return View(model);
                 }
@@ -102,7 +104,10 @@ namespace ProjectApp.Controllers
                     return RedirectToAction("Index", "Main");
                 }
                 var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-                if (!result.Succeeded) return View(model);
+                if (!result.Succeeded)
+                {
+                    return View(model);
+                }
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "LoggedIn");
             }
@@ -129,7 +134,7 @@ namespace ProjectApp.Controllers
                 //send email confirmation
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Main", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailSend.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Link</a>");
+                await _emailSend.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking this link: {Environment.NewLine}<a href='{callbackUrl}'></a>");
             }
             return View(model);
         }
@@ -169,6 +174,14 @@ namespace ProjectApp.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
             return View("ConfirmEmail");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SmsTest()
+        {
+            await _smsSend.SendSmsAsync("13145857921", "This is a test message");
+
+            return RedirectToAction("Index", "Main");
         }
     }
 }
